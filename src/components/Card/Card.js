@@ -1,16 +1,15 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { CardMedia } from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Modal from "@mui/material/Modal";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { Grid } from "@mui/material";
+import { CardMedia, IconButton, StepIcon } from "@mui/material";
+
 import "./Card.style.css";
 
 export default function BooksCard(props) {
@@ -38,7 +37,12 @@ export default function BooksCard(props) {
             justifyContent: "space-between",
           }}
         >
-          <Button size="small" variant="contained" onClick={props.editModalStateHandler}>
+          <Button
+            size="small"
+            endIcon={<EditIcon />}
+            variant="contained"
+            onClick={props.editModalStateHandler}
+          >
             Edit
           </Button>
 

@@ -1,13 +1,12 @@
-/* .App {
-   text-align: center; 
-} */
-
 .cards-container {
   display: flex;
-  /* justify-content: center; */
 }
 
 .navbar {
   width: 100%;
   margin-bottom: 10px;
+}
+
+Button {
+  background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
 }

@@ -16,7 +16,7 @@ export default function CardList(props) {
           card={card}
           key={index}
           deleteHandler={(e) => props.deleteHandler(e, index)}
-          editModalStateHandler={props.editModalStateHandler}
+          editModalStateHandler={(e) => props.editModalStateHandler(e, index)}
         />
       ))}
     </Grid>
