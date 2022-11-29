@@ -1,5 +1,5 @@
 import React from "react";
-import BooksCard from "./Card";
+import BooksCard from "../Card/Card";
 import { Grid } from "@mui/material";
 import "./Cards.style.css";
 
@@ -16,7 +16,7 @@ export default function CardList(props) {
           card={card}
           key={index}
           deleteHandler={(e) => props.deleteHandler(e, index)}
-          editHandler={(e) => props.editHandler(e)}
+          editModalStateHandler={props.editModalStateHandler}
         />
       ))}
     </Grid>

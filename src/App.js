@@ -1,20 +1,22 @@
 import "./App.css";
-import { useState } from "react";
-import CardList from "./components/CardList";
-import { styled, alpha } from "@mui/material/styles";
+import { useRef, useState } from "react";
+import CardList from "./components/CardList/CardList";
+// import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 // import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
+// import InputBase from "@mui/material/InputBase";
+// import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Modal from "@mui/material/Modal";
 
 const images = [
   {
     title: "Title 1",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "Vivamus sed lacus euismod, vestibulum ante ut, porta lectus. Quisque eu ullamcorper nunc. Vestibulum scelerisque congue est, sed interdum augue ornare eget. Ut et justo luctus, sollicitudin dui at, imperdiet purus. Proin imperdiet ex sit amet lacus mollis, vel malesuada lectus blandit. Fusce et sem turpis. Morbi dignissim efficitur libero sit amet euismod. Aenean at eros aliquam, blandit dolor fringilla, placerat tellus. Pellentesque elementum tempor sem vitae consectetur. Vestibulum in eleifend lectus. Donec tempor enim mi, finibus convallis lorem auctor ut. Proin eget pellentesque massa. Phasellus sagittis, metus non iaculis euismod, massa magna euismod est, at viverra nisi turpis vel ipsum. Etiam porttitor ut neque sit amet convallis.",
     url: "HarryPotter-And-The-Half-Blood-Prince.jpg",
   },
   {
@@ -45,12 +47,24 @@ const images = [
 
 function App() {
   const [cards, setCards] = useState(images);
-  console.log(cards);
+  const [isOpenAdd, setIsOpenAdd] = useState(false);
+  const inputTitle = useRef(null);
+  const inputDesc = useRef(null);
+  // const inputURL = useRef(null);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+
+  const editModalStateHandler = (e) => {
+    e.preventDefault();
+    return !isOpenEdit ? setIsOpenEdit(true) : setIsOpenEdit(false);
+  };
 
   const editHandler = (e) => {
     e.preventDefault();
-    console.log("edit element");
+    let tmpCard = cards;
+
+    console.log(tmpCard);
   };
+  console.log(cards);
 
   const deleteHandler = (e, index) => {
     e.preventDefault();
@@ -66,15 +80,19 @@ function App() {
   const addHandler = (e) => {
     e.preventDefault();
     let tmpCards = [...cards];
+    const title = inputTitle.current.value;
+    const description = inputDesc.current.value;
+    // const url = inputURL.current.value;
     tmpCards.push({
-      title: "Hellosdfds",
-      description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-      url: "HP-And-The-Coursed-Child.jpg",
+      title: title,
+      description: description,
+      url: "HarryPotter-And-The-Half-Blood-Prince.jpg",
     });
-    // tmpCards.push(newCard)
     setCards(tmpCards);
-    console.log(cards);
+  };
+
+  const addModalStateHandler = () => {
+    return !isOpenAdd ? setIsOpenAdd(true) : setIsOpenAdd(false);
   };
 
   // const Search = styled("div")(({ theme }) => ({
@@ -129,26 +147,70 @@ function App() {
                 size="small"
                 variant="contained"
                 sx={{ display: { xs: "none", sm: "block" } }}
-                onClick={(e) => addHandler(e)}
+                onClick={addModalStateHandler}
               >
-                ADD
+                ADD BOOK
               </Button>
-              {/* <Button onClick={handleOpen}>Open modal</Button>
+              {/* MODAL ADD*/}
               <Modal
-                open={open}
-                onClose={handleClose}
+                open={isOpenAdd}
+                onClose={addModalStateHandler}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
               >
-                <Box sx={style}>
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Text in a modal
-                  </Typography>
-                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                  </Typography>
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    label="Outlined"
+                    variant="outlined"
+                    defaultValue="Title"
+                    inputRef={inputTitle}
+                  />
+                  <TextField
+                    id="outlined-basic"
+                    label="Outlined"
+                    variant="outlined"
+                    defaultValue="description"
+                    inputRef={inputDesc}
+                  />
+                  {/* <Button variant="contained" component="label">
+                    Upload
+                    <input hidden accept="images*" multiple type="file" ref={inputURL} />
+                  </Button> */}
+                  <Button onClick={(e) => addHandler(e)}>SUBMIT</Button>
+                  <Button onClick={(e) => addModalStateHandler(e)}>CLOSE</Button>
                 </Box>
-              </Modal> */}
+              </Modal>
+              {/* MODAL EDIT*/}
+              <Modal
+                open={isOpenEdit}
+                onClose={editModalStateHandler}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    label="Outlined"
+                    variant="outlined"
+                    defaultValue="Title"
+                    inputRef={inputTitle}
+                  />
+                  <TextField
+                    id="outlined-basic"
+                    label="Outlined"
+                    variant="outlined"
+                    defaultValue="description"
+                    inputRef={inputDesc}
+                  />
+                  {/* <Button variant="contained" component="label">
+                    Upload
+                    <input hidden accept="images*" multiple type="file" ref={inputURL} />
+                  </Button> */}
+                  <Button onClick={editHandler}>SAVE</Button>
+                  <Button onClick={editModalStateHandler}>CLOSE</Button>
+                </Box>
+              </Modal>
               {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -159,7 +221,11 @@ function App() {
           </AppBar>
         </Box>
       </div>
-      <CardList cards={cards} deleteHandler={deleteHandler} editHandler={editHandler} />
+      <CardList
+        cards={cards}
+        deleteHandler={deleteHandler}
+        editModalStateHandler={editModalStateHandler}
+      />
     </div>
   );
 }
